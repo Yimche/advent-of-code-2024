@@ -10,6 +10,10 @@ count x = length . filter (x==)
 toInt :: [String] -> [Int]
 toInt = map read
 
+levelSkip :: [Int] -> Bool
+levelSkip list 
+  = any isSafe $ filter ((length list - 1 ==). length)(subsequences list)
+
 isSafe :: [Int] -> Bool
 isSafe list = case list of
   []      -> True
@@ -37,7 +41,7 @@ main = do
   contents <- hGetContents handle  
   let linesList = lines contents
   let lineNums = map (toInt . words) linesList
-  let safeList = map isSafe lineNums
+  let safeList = map levelSkip lineNums
 
   print $ count True safeList
 
